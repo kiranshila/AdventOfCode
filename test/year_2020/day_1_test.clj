@@ -11,7 +11,7 @@
                                  1456]
                                 2020))))
 
-(deftest given-cases-1
+(deftest given-cases-2
   (is (= 241861950 (sut/solution-2 [1721
                                     979
                                     366

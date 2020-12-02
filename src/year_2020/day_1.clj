@@ -8,23 +8,18 @@
                 (into [])))
 
 (defn solution-1 [input num]
-  (->> (for [i (range (count input))]
-         (let [this (get input i)
-               remainder (- num this)]
-           (for [rest (nthrest input (inc i))]
-             (when (== rest remainder)
-               (* rest this)))))
-       flatten
-       (filter identity)
-       first))
+  (first (for [i (range (count input))
+               :let [this (get input i)
+                     remainder (- num this)]
+               rest (nthrest input (inc i))
+               :when (== rest remainder)]
+           (* rest this))))
 
 (defn solution-2 [input num]
-  (->> (for [i (range (count input))]
-         (let [this (get input i)
-               remainder (- num this)]
-           (let [rest (into [] (nthrest input (inc i)))]
-             (when-let [found (solution-1 rest remainder)]
-               (* found this)))))
-       flatten
-       (filter identity)
-       first))
+  (first (for [i (range (count input))
+               :let [this (get input i)
+                     remainder (- num this)
+                     rest (into [] (nthrest input (inc i)))
+                     found (solution-1 rest remainder)]
+               :when found]
+           (* found this))))
