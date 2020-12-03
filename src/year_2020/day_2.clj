@@ -2,7 +2,7 @@
   (:require [clojure.java.io :as io]
             [clojure.string :as str]))
 
-(def input (->> (slurp (io/resource "2020/2/input"))))
+(def input (slurp (io/resource "2020/2/input")))
 
 (defn parse [input]
   (let [[i j c p] (rest (re-matches #"(\d+)-(\d+) ([a-z]): ([a-z]+)"
