@@ -16,7 +16,7 @@
             :pid #(some? (re-matches #"^\d{9}$" %))
             :ecl #(contains? #{"amb" "blu" "brn" "gry" "grn" "hzl" "oth"} %)
             :hcl #(some? (re-matches #"^#[0-9a-f]{6}" %))
-            :hgt #(when-let [[height unit] (seq (rest (re-matches #"(\d+)(cm|in)" %)))]
+            :hgt #(when-some [[_ height unit] (re-matches #"(\d+)(cm|in)" %)]
                     (cond
                       (= unit "cm") (strint-in-bounds height 150 193)
                       (= unit "in") (strint-in-bounds height 59 76)))})
