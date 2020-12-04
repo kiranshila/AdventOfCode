@@ -4,18 +4,21 @@
 
 (def input (slurp (io/resource "2020/3/input")))
 
-(defn toboggan [input [dy dx]]
-  (->> (for [i (range 0 (count input) dx)
+(def tree? (partial = \#))
+
+(defn toboggan [input [down right]]
+  (->> (for [i (range 0 (count input) down)
              :let [line (get input i)
-                   j (/ (* i dy) dx)]]
+                   j (/ (* i right) down)]]
          (nth (cycle line) j))
-       (filter #(= \# %))
+       (map tree?)
+       (filter true?)
        count))
 
-(def movement [[1 1] [3 1] [5 1] [7 1] [1 2]])
+(def movement [[1 1] [1 3] [1 5] [1 7] [2 1]])
 
 (defn solution-1 [input]
-  (toboggan (str/split-lines input) [3 1]))
+  (toboggan (str/split-lines input) [1 3]))
 
 (defn solution-2 [input]
   (apply * (for [move movement]
