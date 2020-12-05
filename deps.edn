@@ -1,6 +1,8 @@
 {:paths ["src" "resources"]
  :deps {org.clojure/clojure {:mvn/version "1.10.1"}
-        instaparse/instaparse {:mvn/version "1.4.10"}}
+        instaparse/instaparse {:mvn/version "1.4.10"}
+        criterium/criterium {:mvn/version "0.4.6"}
+        com.taoensso/tufte {:mvn/version "2.2.0"}}
  :aliases
  {:test {:extra-paths ["test"]}
   :runner
