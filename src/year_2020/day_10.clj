@@ -9,7 +9,6 @@
   (->> input
        str/split-lines
        (map edn/read-string)
-       (into [])
        sort
        (into [0])
        (#(conj % (+ 3 (apply max %))))))
@@ -17,25 +16,25 @@
 (def tribonacci
   ((fn trib [a b c]
      (lazy-seq (cons a (trib b c (+ a b c)))))
-   0 1 1))
+   1 1 2))
 
 (defn derivative [chain]
-  (into [] (for [i (range 0 (dec (count chain)))]
-             (- (nth chain (inc i)) (nth chain i)))))
+  (for [i (range 0 (dec (count chain)))]
+    (- (nth chain (inc i)) (nth chain i))))
 
 (defn solution-1 [input]
-  (let [chain (get-chain input)
-        deriv (derivative chain)
-        freq (frequencies deriv)]
+  (let [freq (->> input
+                  get-chain
+                  derivative
+                  frequencies)]
     (* (freq 1) (freq 3))))
 
 (defn solution-2 [input]
   (->> input
        get-chain
        derivative
-       (apply str)
-       (#(str/split % #"3")) ;this is silly, but I couldn't think of the nice vector way
-       (filter #(not (str/blank? %)))
+       (partition-by #{3})
+       (filter #(every? (partial = 1) %))
        (map count)
-       (map #(nth tribonacci (inc %)))
+       (map #(nth tribonacci %))
        (reduce *)))
