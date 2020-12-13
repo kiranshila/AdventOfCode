@@ -7,55 +7,50 @@
 
 (def input (slurp (io/resource "2020/12/input")))
 
-(defn parse-line [str]
-  (let [[dir arg] (rest (first (re-seq #"(\w)(\d+)" str)))
-        dir (keyword dir)
-        arg (edn/read-string arg)]
-    [dir arg]))
-
-(defn move [[position facing] [action arg]]
-  (case action
-    :N [(mat/add position [0 arg]) facing]
-    :S [(mat/add position [0 (- arg)]) facing]
-    :E [(mat/add position [arg 0]) facing]
-    :W [(mat/add position [(- arg) 0]) facing]
-    :L [position (mod (- facing arg) 360)]
-    :R [position (mod (+ facing arg) 360)]
-    :F (let [e (* arg (Math/sin (Math/toRadians facing)))
-             n (* arg (Math/cos (Math/toRadians facing)))]
-         [(mat/add position [e n]) facing])))
+(defn parse-lines [input]
+  (for [line (str/split-lines input)]
+    (let [[dir arg] (rest (first (re-seq #"(\w)(\d+)" line)))]
+     [(keyword dir) (edn/read-string arg)])))
 
 (defn rotate [dir [x y]]
   (case dir
     :R [y (- x)]
     :L [(- y) x]))
 
-(defn move-2 [[waypoint ship] [action arg]]
-  (case action
-    :N [(mat/add waypoint [0 arg]) ship]
-    :S [(mat/add waypoint [0 (- arg)]) ship]
-    :E [(mat/add waypoint [arg 0]) ship]
-    :W [(mat/add waypoint [(- arg) 0]) ship]
-    :L [(mat/add (nth (iterate #(rotate :L %) waypoint) (/ arg 90))) ship]
-    :R [(mat/add (nth (iterate #(rotate :R %) waypoint) (/ arg 90))) ship]
-    :F [waypoint (mat/add ship (mat/mul arg waypoint))]))
+(def direction {0 :N, 90 :E, 180 :S, 270 :W})
+
+(defmulti move
+  "Takes a [ship facing] and [action arg], returns a new [ship facing]"
+  (fn [_ [action _]] action))
+
+(defmethod move :N [[ship facing] [_ arg]] [(mat/add ship [0 arg]) facing])
+(defmethod move :S [[ship facing] [_ arg]] [(mat/add ship [0 (- arg)]) facing])
+(defmethod move :E [[ship facing] [_ arg]] [(mat/add ship [arg 0]) facing])
+(defmethod move :W [[ship facing] [_ arg]] [(mat/add ship [(- arg) 0]) facing])
+(defmethod move :L [[ship facing] [_ arg]] [ship (mod (- facing arg) 360)])
+(defmethod move :R [[ship facing] [_ arg]] [ship (mod (+ facing arg) 360)])
+(defmethod move :F [[ship facing] [_ arg]] (move [ship facing] [(direction facing) arg]))
+
+(defmulti move-2
+  "Takes a [waypoint ship] and [action arg], returns a new [waypoint ship]"
+  (fn [_ [action _]] action))
+
+(defmethod move-2 :L [[waypoint ship] [_ arg]]
+  [(mat/add (nth (iterate #(rotate :L %) waypoint) (/ arg 90))) ship])
+(defmethod move-2 :R [[waypoint ship] [_ arg]]
+  [(mat/add (nth (iterate #(rotate :R %) waypoint) (/ arg 90))) ship])
+(defmethod move-2 :F [[waypoint ship] [_ arg]]
+  [waypoint (mat/add ship (mat/mul arg waypoint))])
+(defmethod move-2 :default [w-s command] (move [w-s command]))
 
 (defn solution-1 [input]
-  (let [commands (->> input
-                   str/split-lines
-                   (map parse-line))]
-    (loop [commands commands
-           ship [[0 0] 90]]
-      (if (empty? commands)
-        (lin/norm (first ship) 1)
-        (recur (rest commands) (move ship (first commands)))))))
+  (->> (parse-lines input)
+       (reduce move [[0 0] 90])
+       first
+       (#(lin/norm % 1))))
 
 (defn solution-2 [input]
-  (let [commands (->> input
-                      str/split-lines
-                      (map parse-line))]
-    (loop [commands commands
-           w-s [[10 1] [0 0]]]
-      (if (empty? commands)
-        (lin/norm (second w-s) 1)
-        (recur (rest commands) (move-2 w-s (first commands)))))))
+  (->> (parse-lines input)
+       (reduce move-2 [[10 1] [0 0]])
+       second
+       (#(lin/norm % 1))))
