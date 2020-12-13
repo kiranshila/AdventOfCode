@@ -4,7 +4,8 @@
         criterium/criterium {:mvn/version "0.4.6"}
         com.taoensso/tufte {:mvn/version "2.2.0"}
         org.clojure/math.combinatorics {:mvn/version "0.1.6"}
-        net.mikera/core.matrix {:mvn/version "0.62.0"}}
+        net.mikera/core.matrix {:mvn/version "0.62.0"}
+        org.clojure/math.numeric-tower {:mvn/version "0.0.4"}}
  :aliases
  {:test {:extra-paths ["test"]}
   :runner
