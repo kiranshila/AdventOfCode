@@ -47,3 +47,12 @@
                                [_ _ si] (xgcd  ni div)]]
                      (* (- i) si div)))
          N)))
+
+(defn solve-next-cr [state id]
+  (if (= 'x id) [(first state) (second state) (inc (nth state 2))]
+      [(* id (first state))
+       (first (keep #(let [mul (mod (+ (second state) (* % (first state))) id)]
+                       (when (= mul (mod (- id (nth state 2)) id))
+                        mul))
+                    (range id)))
+       (inc (nth state 2))]))
