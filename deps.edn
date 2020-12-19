@@ -5,7 +5,8 @@
         com.taoensso/tufte {:mvn/version "2.2.0"}
         org.clojure/math.combinatorics {:mvn/version "0.1.6"}
         net.mikera/core.matrix {:mvn/version "0.62.0"}
-        org.clojure/math.numeric-tower {:mvn/version "0.0.4"}}
+        org.clojure/math.numeric-tower {:mvn/version "0.0.4"}
+        incanter/incanter-core {:mvn/version "1.9.3"}}
  :aliases
  {:test {:extra-paths ["test"]}
   :runner
