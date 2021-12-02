@@ -23,3 +23,5 @@
                      found (solution-1 rest remainder)]
                :when found]
            (* found this))))
+
+(solution-1 input 2020)
