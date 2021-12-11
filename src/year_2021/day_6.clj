@@ -2,8 +2,7 @@
   (:require [clojure.java.io :as io]
             [clojure.string :as str]))
 
-(def input (->> (slurp (io/resource "2021/6/input"))
-                str/trim
+(def input (->> (str/trim (slurp (io/resource "2021/6/input")))
                 (#(str/split % #","))
                 (map #(Long/parseLong %))
                 frequencies))
