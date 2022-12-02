@@ -10,3 +10,6 @@
 .hgignore
 .hg/
 .DS_Store
+.clj-kondo
+.dropboxignore
+.lsp
