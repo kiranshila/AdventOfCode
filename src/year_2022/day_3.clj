@@ -10,11 +10,10 @@
 
 (->> (slurp (io/resource "2022/3/input"))
      (str/split-lines)
-     (map (fn [line]
-            (let [size (/ (count line) 2)
-                  a (into #{} (take size line))
-                  b (into #{} (take-last size line))]
-              (set/intersection a b))))
+     (map #(let [size (/ (count %) 2)
+                 a (set (take size %))
+                 b (set (take-last size %))]
+             (set/intersection a b)))
      (map first)
      (map priority)
      (reduce +))
@@ -24,9 +23,9 @@
      (partition 3)
      (map (fn [[a b c]]
             (set/intersection
-             (into #{} (seq a))
-             (into #{} (seq b))
-             (into #{} (seq c)))))
+             (set a)
+             (set b)
+             (set c))))
      (map first)
      (map priority)
      (reduce +))
