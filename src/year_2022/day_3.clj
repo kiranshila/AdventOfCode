@@ -23,9 +23,7 @@
      (partition 3)
      (map (fn [[a b c]]
             (set/intersection
-             (set a)
-             (set b)
-             (set c))))
+             (set a) (set b) (set c))))
      (map first)
      (map priority)
      (reduce +))
