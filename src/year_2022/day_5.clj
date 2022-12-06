@@ -2,18 +2,6 @@
   (:require [clojure.java.io :as io]
             [clojure.string :as str]))
 
-;; Why parse when I can type
-(def stacks
-  ['(:P :V :Z :W :D :T)
-   '(:D :J :F :V :W :S :L)
-   '(:H :B :T :V :S :L :M :Z)
-   '(:J :S :R)
-   '(:W :L :M :F :G :B :Z :C)
-   '(:B :G :R :Z :H :V :W :Q)
-   '(:N :D :B :C :P :J :V)
-   '(:Q :B :T :P)
-   '(:C :R :Z :G :H)])
-
 (defn move [stacks instruction part]
   (let [[n from to] (->> (re-seq #"move (\d+) from (\d+) to (\d+)"
                                  instruction)
@@ -27,9 +15,15 @@
     (-> (update stacks to #(apply conj % grabbed))
         (update from #(drop n %)))))
 
+(defn parse [input]
+  (->> (str/split-lines input)
+       (apply map list)
+       (map #(filter (fn [c] (<= 65 (int c) 90)) %))
+       (filter seq)
+       (into [])))
+
 (->> (slurp (io/resource "2022/5/input"))
      str/split-lines
-     (reduce #(move %1 %2 :part-2) stacks)
+     (reduce #(move %1 %2 :part-2) (parse (slurp (io/resource "2022/5/header"))))
      (map first)
-     (map name)
      (apply str))
