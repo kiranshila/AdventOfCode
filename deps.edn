@@ -9,5 +9,7 @@
         incanter/incanter-core {:mvn/version "1.9.3"}}
  :aliases
  {:test {:extra-paths ["test"]
- 	 :extra-deps {lambdaisland/kaocha {:mvn/version "1.71.1119"}}
-   	 :main-opts ["-m" "kaocha.runner"]}}}
+         :extra-deps {lambdaisland/kaocha {:mvn/version "1.71.1119"}}
+         :main-opts ["-m" "kaocha.runner"]}
+  :dev {:jvm-opts ["-XX:-OmitStackTraceInFastThrow"
+                   "-Xss10M"]}}}
