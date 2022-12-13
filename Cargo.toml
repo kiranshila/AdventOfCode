@@ -1,0 +1,12 @@
+[package]
+name = "aoc"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "22_7"
+path = "src/year_2022/day_7.rs"
+
+[[bin]]
+name = "22_10"
+path = "src/year_2022/day_10.rs"
