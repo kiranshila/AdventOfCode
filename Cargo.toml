@@ -10,3 +10,11 @@ path = "src/year_2022/day_7.rs"
 [[bin]]
 name = "22_10"
 path = "src/year_2022/day_10.rs"
+
+[[bin]]
+name = "22_15"
+path = "src/year_2022/day_15.rs"
+
+[dependencies]
+lazy_static = "1.4.0"
+regex = "1.7.0"
