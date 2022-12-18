@@ -4,7 +4,7 @@
             [clojure.string :as str]
             [clojure.set :as set]))
 
-(def input (slurp (io/resource "2022/14/input")))
+(def input (slurp (io/resource "2022/14/d14.txt")))
 
 (defn parse [path]
   (->> (str/split path #" -> ")
@@ -67,34 +67,34 @@
             (not (filled? r)) (recur r)
             :else (conj sand sand-pos)))))))
 
-#_(def part-2
-    (->> (iterate (partial sand-update-2 rocks) #{})
-         (take-while identity)
-         last
-         count))
+(def part-2
+  (->> (iterate (partial sand-update-2 rocks) #{})
+       (take-while identity)
+       last
+       count))
 
 ;;; Viz
 
-(defn setup []
-  (q/frame-rate 60)
-  (q/stroke 255 255 255)
-  (q/background 0)
-  (q/no-smooth)
-  (q/scale 3)
-  (doseq [point rocks]
-    (apply q/point point)))
+#_#_#_#_(defn setup []
+          (q/frame-rate 60)
+          (q/stroke 255 255 255)
+          (q/background 0)
+          (q/no-smooth)
+          (q/scale 3)
+          (doseq [point rocks]
+            (apply q/point point)))
 
-(def sand (atom #{}))
+      (def sand (atom #{}))
 
-(defn draw []
-  (q/stroke 255 0 0)
-  (q/scale 3)
-  (swap! sand (partial sand-update rocks))
-  (doseq [point @sand]
-    (apply q/point point)))
+    (defn draw []
+      (q/stroke 255 0 0)
+      (q/scale 3)
+      (swap! sand (partial sand-update rocks))
+      (doseq [point @sand]
+        (apply q/point point)))
 
-(q/defsketch regolith-reservoir
-  :title "Regolith Reservoir"
-  :setup setup
-  :draw draw
-  :size [2256 1504])
+  (q/defsketch regolith-reservoir
+    :title "Regolith Reservoir"
+    :setup setup
+    :draw draw
+    :size [2256 1504])

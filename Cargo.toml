@@ -3,6 +3,14 @@ name = "aoc"
 version = "0.1.0"
 edition = "2021"
 
+[dependencies]
+decurse = "0.0.4"
+itertools = "0.10.5"
+kstring = {version = "2.0.0", features = ["arc"]}
+lazy_static = "1.4.0"
+memoize = {version = "0.3.3", features = ["full"]}
+regex = "1.7.0"
+
 [[bin]]
 name = "22_7"
 path = "src/year_2022/day_7.rs"
@@ -15,6 +23,6 @@ path = "src/year_2022/day_10.rs"
 name = "22_15"
 path = "src/year_2022/day_15.rs"
 
-[dependencies]
-lazy_static = "1.4.0"
-regex = "1.7.0"
+[[bin]]
+name = "22_16"
+path = "src/year_2022/day_16.rs"
