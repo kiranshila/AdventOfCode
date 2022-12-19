@@ -3,6 +3,7 @@
         instaparse/instaparse {:mvn/version "1.4.12"}
         criterium/criterium {:mvn/version "0.4.6"}
         com.taoensso/tufte {:mvn/version "2.4.5"}
+        progrock/progrock {:mvn/version "0.1.2"}
         org.clojure/math.combinatorics {:mvn/version "0.1.6"}
         org.clojure/data.priority-map {:mvn/version "1.1.0"}
         org.clojure/core.match {:mvn/version "1.0.0"}
