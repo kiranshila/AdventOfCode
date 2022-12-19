@@ -82,7 +82,7 @@ fn distances() -> HashMap<Valve, HashMap<Valve, u64>> {
 }
 
 lazy_static! {
-    static ref INPUT: String = fs::read_to_string("resources/2022/16/input").unwrap();
+    static ref INPUT: String = fs::read_to_string("resources/2022/16/elijah_input").unwrap();
     static ref GRAPH: Graph = Graph(INPUT.lines().map(parse).collect());
     static ref DISTANCES: HashMap<Valve, HashMap<Valve, u64>> = distances();
 }
@@ -173,5 +173,5 @@ impl Step {
 }
 
 fn main() {
-    dbg!(GRAPH.part_2());
+    dbg!(GRAPH.part_1());
 }
