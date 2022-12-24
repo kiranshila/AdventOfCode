@@ -43,44 +43,6 @@
 
 ;; Fuck you eric making the test a completley different shape from the actual input
 
-;; (defn stitch21 [n]
-;;   (let [edge-1 (range2 [(* 2 n) (* 3 n)] [0 0] 1)
-;;         edge-2 (range2 [(dec n) -1] [n n] -1)]
-;;     (stitch edge-1 edge-2 :n :s)))
-
-;; (defn stitch31 [n]
-;;   (let [edge-1 (range2 [(* 2 n) (* 2 n)] [0 n] 1)
-;;         edge-3 (range2 [n (* 2 n)] [n n] 1)]
-;;     (stitch edge-1 edge-3 :w :s)))
-
-;; (defn stitch25 [n]
-;;   (let [edge-2 (range2 [0 n] [(dec (* 2 n)) (dec (* 2 n))] 1)
-;;         edge-5 (range2 [(dec (* 3 n)) (dec (* 2 n))] [(dec (* 3 n)) (dec (* 3 n))] -1)]
-;;     (stitch edge-2 edge-5 :s :n)))
-
-;; (defn stitch35 [n]
-;;   (let [edge-3 (range2 [n (* 2 n)] [(dec (* 2 n)) (dec (* 2 n))] 1)
-;;         edge-5 (range2 [(* 2 n) (* 2 n)] [(dec (* 3 n)) (dec (* 2 n))] -1)]
-;;     (stitch edge-3 edge-5 :s :e)))
-
-;; (defn stitch64 [n]
-;;   (let [edge-6 (range2 [(* 3 n) (* 4 n)] [(* 2 n) (* 2 n)] 1)
-;;         edge-4 (range2 [(dec (* 3 n)) (dec (* 3 n))] [(dec (* 2 n)) (dec n)] -1)]
-;;     (stitch edge-6 edge-4 :n :w)))
-
-;; (defn stitch61 [n]
-;;   (let [edge-6 (range2 [(dec (* 4 n)) (dec (* 4 n))] [(dec (* 3 n)) (dec (* 2 n))] -1)
-;;         edge-1 (range2 [(dec (* 3 n)) (dec (* 3 n))] [0 (* 2 n)] 1)]
-;;     (stitch edge-6 edge-1 :e :w)))
-
-;; (defn stitch62 [n]
-;;   (let [edge-6 (range2 [(* 3 n) (* 4 n)] [(dec (* 3 n)) (dec (* 3 n))] 1)
-;;         edge-2 (range2 [0 0] [(dec (* 2 n)) (dec n)] -1)]
-;;     (stitch edge-6 edge-2 :s :e)))
-
-;; (defn stitch-cube [n]
-;;   (merge (stitch21 n) (stitch31 n) (stitch25 n) (stitch35 n) (stitch64 n) (stitch61 n) (stitch62 n)))
-
 (defn stitch16 [n]
   (let [edge-1 (range2 [0 n] [(dec (* 4 n)) (dec (* 4 n))] 1)
         edge-6 (range2 [(* 2 n) (* 3 n)] [0 0] 1)]
@@ -98,7 +60,7 @@
 
 (defn stitch46 [n]
   (let [edge-4 (range2 [(dec (* 2 n)) (dec (* 2 n))] [n (* 2 n)] 1)
-        edge-6 (range2 [(dec n) (dec n)] [(* 2 n) (* 3 n)] 1)]
+        edge-6 (range2 [(* 2 n) (* 3 n)] [(dec n) (dec n)] 1)]
     (stitch edge-4 edge-6 :e :n)))
 
 (defn stitch42 [n]
@@ -136,7 +98,6 @@
              :w (last (srow)))]))))
 
 (defn next-pos [map current dir]
-  (println current " " dir)
   (let [pos (mapv + (dir deltas) current)]
     (if (contains? map pos)
       [dir pos]
@@ -164,7 +125,6 @@
                       (filter #(= 0 (second %)))
                       (sort-by first)
                       first)]
-    (println top-left)
     (reduce (partial perform-instruction map) [top-left :e] instructions)))
 
 (def solve
