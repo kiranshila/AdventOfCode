@@ -6,9 +6,9 @@ edition = "2021"
 [dependencies]
 decurse = "0.0.4"
 itertools = "0.10.5"
-kstring = {version = "2.0.0", features = ["arc"]}
+kstring = { version = "2.0.0", features = ["arc"] }
 lazy_static = "1.4.0"
-memoize = {version = "0.3.3", features = ["full"]}
+memoize = { version = "0.3.3", features = ["full"] }
 regex = "1.7.0"
 
 [[bin]]

@@ -1,5 +1,6 @@
 /target
 /classes
+/resources
 /checkouts
 *.jar
 *.class
