@@ -29,16 +29,9 @@
       (> ra rb) 1
       (< ra rb) -1
       :else
-      (loop [a a
-             b b]
-        (let [sa (s (first a))
-              sb (s (first b))]
-          (if (and (seq a) (seq b))
-            (cond
-              (> sa sb) 1
-              (< sa sb) -1
-              :else (recur (rest a) (rest b)))
-            0))))))
+      (compare
+       (->> a (mapv s))
+       (->> b (mapv s))))))
 
 (defn parse-input [input]
   (->> (str/split-lines input)
