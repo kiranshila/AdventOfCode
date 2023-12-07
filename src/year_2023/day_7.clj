@@ -39,8 +39,7 @@
        (sort-by first cmp)
        (map second)
        (map parse-long)
-       (map-indexed vector)
-       (map (fn [[i v]] (* (inc i) v)))
+       (map-indexed (fn [i v] (* (inc i) v)))
        (reduce +)))
 
 (defn rank-2 [hand-str]
