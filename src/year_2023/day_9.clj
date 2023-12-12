@@ -9,30 +9,20 @@
 (defn finite-difference [nums]
   (map #(apply - (reverse %)) (partition 2 1 nums)))
 
-(defn ex-f [nums]
+(defn extrap [nums]
   (loop [ends [(last nums)]
          nums nums]
-    (if (every? (partial = 0) nums)
+    (if (every? zero? nums)
       (reduce + ends)
       (let [ds (finite-difference nums)]
         (recur (conj ends (last ds)) ds)))))
 
-(defn ex-b [nums]
-  (loop [starts [(first nums)]
-         nums nums]
-    (if (every? (partial = 0) nums)
-      (reduce #(- %2 %1) (reverse starts))
-      (let [ds (finite-difference nums)]
-        (recur (conj starts (first ds)) ds)))))
+(defn solve [input & {:keys [rev]}]
+  (cond->> (str/split-lines input)
+       true (map #(str/split % #"\s+"))
+       true (map #(mapv parse-long %))
+       rev (map reverse)
+       true (map extrap)
+       true (reduce +)))
 
-(defn solve [input ex-fn]
-  (->> (str/split-lines input)
-       (map #(str/split % #"\s+"))
-       (map #(mapv parse-long %))
-       (map ex-fn)
-       (reduce +)))
-
-;; Part 1
-(solve input ex-b)
-;; Part 2
-(solve input ex-b)
+(solve input :rev true)
