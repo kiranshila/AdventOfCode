@@ -2,8 +2,7 @@
   (:require
    [clojure.java.io :as io]
    [clojure.string :as str]
-   [clojure.set :as set]
-   [clojure.math :as math]))
+   [clojure.set :as set]))
 
 (def input (slurp (io/resource "2023/10/input")))
 (def example (slurp (io/resource "2023/10/example")))

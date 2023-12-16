@@ -7,71 +7,71 @@
 (def input (slurp (io/resource "2023/13/input")))
 (def example (slurp (io/resource "2023/13/example")))
 
-(defn overlaps? [[a b]]
-  (if (and (seq a) (seq b))
-    (if (= (first a) (first b))
-      (recur [(rest a) (rest b)])
-      false)
-    true))
+(defn mirrored? [x idx]
+  (loop [l idx r (inc idx)]
+    (let [xl (nth x l nil)
+          xr (nth x r nil)]
+      (cond
+        (or (nil? xl) (nil? xr)) true
+        (= xl xr) (recur (dec l) (inc r))
+        :else false))))
 
-(defn mirrors [row]
-  (->> (for [i (range 1 (count row))
-             :let [left (reverse (take i row))
-                   right (drop i row)]]
-         [left right])
-       (map overlaps?)
-       (map-indexed vector)
+(defn find-line-mirror [x]
+  (->> (range (dec (count x)))
+       (map-indexed (fn [i v] [i (mirrored? x v)]))
        (filter second)
        (map first)
-       (map inc) ;; Unsure why I'm off by one
+       (map inc) ;; AOC is 1-indexed here
        (into #{})))
+
+(defn find-pattern-mirror [pat-lines]
+  (->> (map find-line-mirror pat-lines)
+       (apply set/intersection)
+       first)) ;; Presumably only one
 
 (defn transpose [& xs]
   (apply map list xs))
 
 (defn summarize [pat]
-  (let [lines (str/split-lines pat)
-        col-mirrors (->> lines
-                         (map mirrors)
-                         (apply set/intersection))
-        row-mirrors (->> lines
-                         (apply transpose)
-                         (map mirrors)
-                         (apply set/intersection))]
-    (+ (reduce + col-mirrors)
-       (reduce + (map (partial * 100) row-mirrors)))))
+  (let [lines (str/split-lines pat)]
+    (if-let [cm (find-pattern-mirror lines)]
+      cm
+      (* 100 (find-pattern-mirror (apply transpose lines))))))
 
 (defn part-one [input]
   (->> (str/split input #"\n\n")
        (map summarize)
        (reduce +)))
 
-;; Find all the points that break the reflection
-;; Swap them all and
+(defn count-smudges [x idx]
+  (loop [count 0
+         l idx
+         r (inc idx)]
+    (let [xl (nth x l nil)
+          xr (nth x r nil)]
+      (cond
+        (or (nil? xl) (nil? xr)) count
+        (= xl xr) (recur count (dec l) (inc r))
+        :else (recur (inc count) (dec l) (inc r))))))
 
-(defn find-smudge
-  ([[a b i]]
-   (when (and (seq a) (seq b))
-     (if (= (first a) (first b))
-       (recur [(rest a) (rest b) (dec i)])
-       i))))
+(defn potential-smudge [x]
+  (->> (range (dec (count x)))
+       (map (partial count-smudges x))))
 
-(defn smudge [row]
-  (let [prev-refl (mirrors row)]
-    (->> (for [i (set/difference (into #{} (range 1 (count row))) prev-refl)
-               :let [left (reverse (take i row))
-                     right (drop i row)]]
-           [left right i])
-         (map find-smudge)
-         (into #{}))))
+(defn find-pattern-smudge [pat-lines]
+  (let [line-smudges  (map potential-smudge pat-lines)]
+    (->> (apply transpose line-smudges)
+         (map (partial reduce +))
+         (#(.indexOf % 1))
+         (#(get {-1 nil} % (inc %))))))
 
-(defn pat-smudge [pat]
-  (let [lines (str/split-lines pat)
-        col-smudge (->> lines
-                        (map smudge)
-                        (apply set/intersection))
-        row-smudge (->> lines
-                        (apply transpose)
-                        (map smudge)
-                        (apply set/intersection))]
-    [col-smudge row-smudge]))
+(defn summarize-two [pat]
+  (let [lines (str/split-lines pat)]
+    (if-let [cm (find-pattern-smudge lines)]
+      cm
+      (* 100 (find-pattern-smudge (apply transpose lines))))))
+
+(defn part-two [input]
+  (->> (str/split input #"\n\n")
+       (map summarize-two)
+       (reduce +)))
